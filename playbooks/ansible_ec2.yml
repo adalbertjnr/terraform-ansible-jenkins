@@ -1,0 +1,92 @@
+---
+- name: Bootstrap main node
+  hosts: main
+  become: yes
+
+  tasks:
+  - name: Download grafana key
+    ansible.builtin.apt_key:
+      url: https://apt.grafana.com/gpg.key
+      state: present
+      keyring: /usr/share/keyrings/grafana.key
+  - name: Add grafana repo
+    ansible.builtin.apt_repository:
+      repo: "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main"
+      filename: grafana
+      state: present
+  - name: Installing grafana
+    ansible.builtin.apt:
+      name: grafana
+      update_cache: yes
+  - name: Ensure Grafana is started and enabled
+    ansible.builtin.systemd:
+      state: started
+      name: grafana-server
+      enabled: yes
+  
+  - name: Downloading prometheus
+    get_url:
+      url: https://github.com/prometheus/prometheus/releases/download/v2.41.0/prometheus-2.41.0.linux-amd64.tar.gz
+      dest: /home/ubuntu
+  - name: Extract prometheus
+    unarchive:
+      src: /home/ubuntu/prometheus-2.41.0.linux-amd64.tar.gz
+      dest: /home/ubuntu
+      remote_src: yes
+  - name: Create prometheus group
+    group:
+      name: prometheus
+      state: present
+  - name: Create prometheus user
+    user:
+      name: prometheus
+      shell: /sbin/nologin
+      group: prometheus
+  - name: Create prometheus directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      recurse: yes
+      owner: prometheus
+      group: prometheus
+      mode: "0755"
+    loop:
+      - /etc/prometheus/rules
+      - /etc/prometheus/rules.d
+      - /etc/prometheus/files_sd
+      - /var/lib/prometheus
+  - name: Copy promtool to usr/local/bin
+    copy:
+      src: "{{ item }}"
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: "0755"
+      owner: prometheus
+      group: prometheus
+    loop:
+      - /home/ubuntu/prometheus-2.41.0.linux-amd64/promtool
+      - /home/ubuntu/prometheus-2.41.0.linux-amd64/prometheus
+  - name: Copy consoles and console_libraries
+    copy:
+      src: "{{ item }}"
+      dest: /etc/prometheus
+      remote_src: yes
+      owner: prometheus
+      group: prometheus
+    loop: 
+      - /home/ubuntu/prometheus-2.41.0.linux-amd64/consoles
+      - /home/ubuntu/prometheus-2.41.0.linux-amd64/console_libraries
+  - name: Create config file
+    template:
+      src: prometheus.yml.j2
+      dest: /etc/prometheus/prometheus.yml
+  - name: Create systemd prometheus file
+    template:
+      src: prometheus.service.j2
+      dest: /etc/systemd/system/prometheus.service
+  - name: Ensure the service is started and reloaded
+    systemd:
+      name: prometheus
+      state: started
+      enabled: yes
+...        

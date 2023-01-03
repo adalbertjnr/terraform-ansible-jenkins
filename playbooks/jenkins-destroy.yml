@@ -1,0 +1,26 @@
+---
+- name: Jenkins install
+  hosts: jenkins
+  
+  tasks:
+  - name: Downloading the key
+    apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      state: absent
+      id: 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
+  - name: Installing the repo
+    apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      state: absent
+      filename: jenkins
+  - name: Update apt cache and Jenkins installation
+    apt:
+      name: jenkins
+      update_cache: no
+      state: absent
+  # - name: Ensure the Jenkins is started and enabled
+  #   systemd:
+  #     name: jenkins
+  #     state: stopped
+  #     enabled: false
+...

@@ -37,7 +37,7 @@ resource "aws_instance" "ec2" {
   }
 
   provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> aws_hosts && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region us-east-1"
+    command = "echo ${self.public_ip} >> aws_hosts" # && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region us-east-1"
   }
 
   provisioner "local-exec" {

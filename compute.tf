@@ -36,14 +36,14 @@ resource "aws_instance" "ec2" {
     Name = "t2_micro_ec2-${random_id.ec2_node_random[count.index].dec}"
   }
 
-  provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> aws_hosts" # && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region us-east-1"
-  }
+  # provisioner "local-exec" {
+  #   command = "echo ${self.public_ip} >> aws_hosts" # && aws ec2 wait instance-status-ok --instance-ids ${self.id} --region us-east-1"
+  # }
 
-  provisioner "local-exec" {
-    when    = destroy
-    command = "sed -i '1!d' aws_hosts"
-  }
+  # provisioner "local-exec" {
+  #   when    = destroy
+  #   command = "sed -i '1!d' aws_hosts"
+  # } Commented (Starting both local-exec provisioners from a jenkins script)
 
 
 }
@@ -53,5 +53,9 @@ resource "aws_instance" "ec2" {
 #   provisioner "local-exec" {
 #     command = "ansible-playbook playbooks/ansible_ec2.yml"
 #   }
-# }
+# } Commented (Ansible is start from jenkins plugin now)
+
+output "instances_ip" {
+ value = [for i in aws_instance.ec2[*]: i.public_ip]
+}
 

@@ -1,6 +1,6 @@
 ---
 - name: Jenkins install
-  hosts: jenkins
+  hosts: my_local
   
   tasks:
   - name: Installing jdk-11

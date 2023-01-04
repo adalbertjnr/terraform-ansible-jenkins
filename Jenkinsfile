@@ -33,6 +33,12 @@ pipeline {
         ansiblePlaybook(credentialsId: 'ec2-ssh', inventory: 'aws_hosts', playbook: 'playbooks/ansible_ec2.yml' 
       }
     }
+    stage('Validate Destroy') {
+      input {
+        message "Do you want to destroy?"
+        ok "Destroy this plan"
+      }
+    }
     stage('Destroy') {
       steps {
         sh 'terraform destroy -auto-approve -no-color'

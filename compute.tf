@@ -53,5 +53,5 @@ resource "aws_instance" "ec2" {
 #   provisioner "local-exec" {
 #     command = "ansible-playbook playbooks/ansible_ec2.yml"
 #   }
-}
+# }
 

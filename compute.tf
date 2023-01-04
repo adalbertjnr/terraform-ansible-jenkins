@@ -59,3 +59,6 @@ output "instances_ip" {
  value = [for i in aws_instance.ec2[*]: i.public_ip]
 }
 
+output "instances_id" {
+  value = [for i in aws_instance.ec2[*]: i.id]
+}

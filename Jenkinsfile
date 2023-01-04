@@ -39,9 +39,9 @@ pipeline {
     }
     stage('Inventory') {
       steps {
-        sh '''printf \\
-          "\\n$(terraform output -json instances_ip | jq -r \'.[]\')" \\
-          >> aws_hosts'''
+        sh '''echo \\
+              "$(terraform output -json instances_ip | jq -r \'.[]\')" \\
+              >> aws_hosts'''
       }
     }
     stage('EC2 Wait') {

@@ -25,7 +25,7 @@ pipeline {
     }
     stage('EC2 Wait') {
       steps {
-        sh 'sh aws ec2 wait instance-status-ok --region us-east-1'
+        sh 'aws ec2 wait instance-status-ok --region us-east-1'
       }
     }  
     stage('Ansible') {
@@ -48,7 +48,6 @@ pipeline {
       }
     }
   }
-  
   post {
     success {
       echo 'Success'

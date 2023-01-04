@@ -35,8 +35,11 @@ pipeline {
     }
     stage('Validate Destroy') {
       input {
-        message "Do you want to destroy?"
-        ok "Destroy this plan"
+        message 'Do you want to destroy?'
+        ok 'Destroy this plan'
+      }
+      steps {
+        echo 'Accepted'
       }
     }
     stage('Destroy') {

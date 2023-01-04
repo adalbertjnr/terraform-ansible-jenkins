@@ -1,4 +1,5 @@
-Infraestrutura na aws usando terraform, automatizando a configuração das instâncias ec2 com Ansible e utilizando Jenkins para pipelines
+# Infraestrutura na aws usando terraform, automatizando a configuração das instâncias ec2 com Ansible e utilizando Jenkins para pipelines
+
 Etapa de criação da rede
 
 1° Utilizando o Terraform, fora criada uma VPC 10.123.0.0/16 -- uma nuvem virtual privada permite que recursos da plataforma sejam alocados numa rede, no caso 10.123.0.0/16.
@@ -11,9 +12,9 @@ Etapa de criação da rede
 
 5° Subnets pública e privada alocadas na VPC e em zonas de disponibilidade diferentes. A pública gera um IP público para todas instâncias ec2 geradas na mesma, já a privada não pois será usada apenas na rede interna. Além disso, nessa etapa utilizada a função cidrsubnet que permite que as subnets sejam geradas automaticamente. Inclusive qualquer quantidade de subnet pode ser gerada.
 
-
 6° Grupo de segurança criado que permite acesso às instâncias de IP público nas portas 22, 80, 443, 3000 e 9090 (ssh, http, https, grafana e prometheus respectivamente).
-Etapa de criação da instância ec2
+
+# Etapa de criação da instância ec2
 
 1° Utilizada uma imagem Ubuntu 22.04 aliada a um t2.micro (1gib de memória ram e 1 núcleo de processamento)
 
@@ -21,7 +22,7 @@ Etapa de criação da instância ec2
 •	Todas as máquinas geradas já terão a chave privada do administrador para conexão ssh e facilitar a vida do Ansible.
 •	Todos os IPs públicos gerados são direcionados para um arquivo.txt de inventário para utilização da etapa a seguir.
 
-Etapa de automatização de instalação e configuração de serviços nas instâncias geradas utilizando Ansible.
+# Etapa de automatização de instalação e configuração de serviços nas instâncias geradas utilizando Ansible.
 
 1° Configurado no ansible o arquivo ansible.cfg para facilitar e diminuir os comandos no ansible: arquivo de hosts padrão com todos os IPs gerados. E ativação de um recurso chamado log_retry, ou seja, qualquer erro na hora da provisão o ansible mostrará o IP da máquina que resultou o erro e permitirá que eu possa novamente rodar o comando especificamente na instância que resultou o erro.
 

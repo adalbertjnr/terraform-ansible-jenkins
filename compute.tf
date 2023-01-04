@@ -48,10 +48,10 @@ resource "aws_instance" "ec2" {
 
 }
 
-resource "null_resource" "ansible_start" {
-  depends_on = [aws_instance.ec2]
-  provisioner "local-exec" {
-    command = "ansible-playbook playbooks/ansible_ec2.yml"
-  }
+# resource "null_resource" "ansible_start" {
+#   depends_on = [aws_instance.ec2]
+#   provisioner "local-exec" {
+#     command = "ansible-playbook playbooks/ansible_ec2.yml"
+#   }
 }
 

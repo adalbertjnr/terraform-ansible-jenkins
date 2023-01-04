@@ -27,6 +27,11 @@ pipeline {
       steps {
         sh 'sh aws ec2 wait instance-status-ok --region us-east-1'
       }
+    }  
+    stage('Ansible') {
+      steps {
+        ansiblePlaybook(credentialsId: 'ec2-ssh', inventory: 'aws_hosts', playbook: 'playbooks/ansible_ec2.yml' 
+      }
     }
     stage('Destroy') {
       steps {

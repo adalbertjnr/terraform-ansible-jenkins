@@ -27,3 +27,7 @@ Etapa de criação da rede
 1° Configurado no ansible o arquivo ansible.cfg para facilitar e diminuir os comandos no ansible: arquivo de hosts padrão com todos os IPs gerados. E ativação de um recurso chamado log_retry, ou seja, qualquer erro na hora da provisão o ansible mostrará o IP da máquina que resultou o erro e permitirá que eu possa novamente rodar o comando especificamente na instância que resultou o erro.
 
 2° Nesse projeto foram instalados através do Ansible o serviço de monitoramento grafana e o prometheus. Utilizado loops para criação de diversos diretórios, extração, movimentação e cópia de arquivos, além de envio de templates.j2 para configuração do serviço em questão.
+
+# Jenkins 
+
+1° Jenkins file adicionado, utilizando multi branch pipeline (dev,main). Quando o push é feito pela branch dev há algumas condicionais e validações a serem aceitas durante a pipeline. Se feito pela main, não há validações de etapas.

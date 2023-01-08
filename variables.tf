@@ -63,5 +63,5 @@ variable "public_key_path" {
 
 variable "ports" {
   type    = list(number)
-  default = [22, 80, 443, 3000, 9090]
+  default = [22, 80, 443, 3000, 9090, 8080]
 }
